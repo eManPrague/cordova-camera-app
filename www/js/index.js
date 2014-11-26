@@ -96,7 +96,7 @@ function getFormatDataError(error)
 
 function uploadVideo()
 {
-    document.getElementById('fuptarget').innerHTML = 'Uplading...<br />';
+    document.getElementById('fuptarget').innerHTML = 'Uploading...<br />';
 
     var fileURI = m_file.fullPath;
 
