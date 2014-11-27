@@ -56,7 +56,33 @@ function recVideo(hq, preferVideo)
   );
 }
 
-var m_file;
+function getMediaFromGallery(video)
+{
+    navigator.camera.getPicture(retrieveSuccess, captureError,
+        {
+            quality: 100,
+            destinationType: Camera.DestinationType.NATIVE_URI,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            mediaType: video ? Camera.MediaType.VIDEO : Camera.MediaType.IMAGE
+        });
+}
+
+var m_filePath;
+
+function retrieveSuccess(imgURI)
+{
+    document.getElementById('fnametarget').innerHTML = 'Start from library<br />';
+    if (typeof imgURI === 'object') {
+        for (var nameindex in imgURI) {
+          document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI[nameindex]+'<br />';
+        }
+    }
+    else {
+      document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI+'<br />';
+    }
+
+    m_filePath = imgURI;
+}
 
 function captureSuccess(mediaFiles) {
   document.getElementById('fnametarget').innerHTML = 'Start<br />';
@@ -94,20 +120,34 @@ function getFormatDataError(error)
     document.getElementById('fnametarget').innerHTML = "Error when retrieving format data (callback)";
 }
 
+function fileUpload(fURI)
+{
+  var options = new FileUploadOptions();
+  options.fileKey = "file";
+  options.fileName = 'capture.'+fURI.substr(fURI.length-3);
+  options.mimeType = "application/octet-stream";
+  options.chunkedMode = false;
+
+  var ft = new FileTransfer();
+  ft.upload(fURI, "http://pond5.dev.eman.cz/form.php", win, fail, options);
+}
+
 function uploadVideo()
 {
     document.getElementById('fuptarget').innerHTML = 'Uploading...<br />';
 
     var fileURI = m_file.fullPath;
 
-    var options = new FileUploadOptions();
-    options.fileKey = "file";
-    options.fileName = fileURI.substr(fileURI.lastIndexOf('/')+1);
-    options.mimeType = "application/octet-stream";
-    options.chunkedMode = false;
-
-    var ft = new FileTransfer();
-    ft.upload(fileURI, "http://pond5.dev.eman.cz/form.php", win, fail, options);
+    if (typeof fileURI === 'object')
+    {
+        for (var nameindex in fileURI) {
+            fileUpload(fileURI[nameindex]);
+        }
+    }
+    else
+    {
+        fileUpload(fileURI);
+    }
 }
 
 function win(r)
