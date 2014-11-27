@@ -43,16 +43,16 @@ var app = {
 
 function recVideo(hq, preferVideo)
 {
-    navigator.device.capture.captureVideo(
-      captureSuccess,
-      captureError,
-      {
-        limit: 1,
-        duration: 10,
-        highquality: hq,
-        frontcamera: false,
-        preferformatvideo: preferVideo
-      }
+  navigator.device.capture.captureVideo(
+    captureSuccess,
+    captureError,
+    {
+      limit: 1,
+      duration: 10,
+      highquality: hq,
+      frontcamera: false,
+      preferformatvideo: preferVideo
+    }
   );
 }
 
@@ -63,13 +63,13 @@ function takePhoto()
 
 function getMediaFromGallery(video)
 {
-    navigator.camera.getPicture(retrieveSuccess, captureError,
-        {
-            quality: 100,
-            destinationType: Camera.DestinationType.NATIVE_URI,
-            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-            mediaType: video ? Camera.MediaType.VIDEO : Camera.MediaType.IMAGE
-        });
+  navigator.camera.getPicture(retrieveSuccess, captureError,
+    {
+      quality: 100,
+      destinationType: Camera.DestinationType.NATIVE_URI,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      mediaType: video ? Camera.MediaType.VIDEO : Camera.MediaType.IMAGE
+    });
 }
 
 var m_filePath;
@@ -79,35 +79,35 @@ function retrieveSuccess(imgURI)
     document.getElementById('fnametarget').innerHTML = 'Start from library<br />';
     if (typeof imgURI === 'object') {
         for (var nameindex in imgURI) {
-          document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI[nameindex]+'<br />';
+            document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI[nameindex]+'<br />';
         }
     }
     else {
-      document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI+'<br />';
+        document.getElementById('fnametarget').innerHTML += 'URI: '+imgURI+'<br />';
     }
 
     m_filePath = imgURI;
 }
 
 function captureSuccess(mediaFiles) {
-  document.getElementById('fnametarget').innerHTML = 'Start<br />';
-  document.getElementById('fnametarget').innerHTML += JSON.stringify(mediaFiles) + '<br />';
-  var i, len;
-  for (i = 0, len = mediaFiles.length; i < len; i++) {
-    var mediaFile = mediaFiles[i];
-    try
-    {
-        m_filePath = mediaFile.fullPath;
-        document.getElementById('fnametarget').innerHTML += 'Got video...<br />';
-        mediaFile.getFormatData(getFormatDataSuccess, getFormatDataError);
-        document.getElementById('fnametarget').innerHTML += 'Gimme sec...<br />';
-        document.getElementById('fnametarget').innerHTML += mediaFile.fullPath;
+    document.getElementById('fnametarget').innerHTML = 'Start<br />';
+    document.getElementById('fnametarget').innerHTML += JSON.stringify(mediaFiles) + '<br />';
+    var i, len;
+    for (i = 0, len = mediaFiles.length; i < len; i++) {
+        var mediaFile = mediaFiles[i];
+        try
+        {
+            m_filePath = mediaFile.fullPath;
+            document.getElementById('fnametarget').innerHTML += 'Got video...<br />';
+            mediaFile.getFormatData(getFormatDataSuccess, getFormatDataError);
+            document.getElementById('fnametarget').innerHTML += 'Gimme sec...<br />';
+            document.getElementById('fnametarget').innerHTML += mediaFile.fullPath;
+        }
+        catch(e)
+        {
+            document.getElementById('fnametarget').innerHTML = "Error when retrieving format data";
+        }
     }
-    catch(e)
-    {
-        document.getElementById('fnametarget').innerHTML = "Error when retrieving format data";
-    }
-  }
 }
 
 function getFormatDataSuccess(mediaFileData) {
@@ -127,26 +127,26 @@ function getFormatDataError(error)
 
 function fileUpload(fURI)
 {
-  var options = new FileUploadOptions();
-  options.fileKey = "file";
-  options.fileName = 'capture.'+fURI.substr(fURI.length-3);
-  options.mimeType = "application/octet-stream";
-  options.chunkedMode = false;
+    var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = 'capture.'+fURI.substr(fURI.length-3);
+    options.mimeType = "application/octet-stream";
+    options.chunkedMode = false;
 
-  var ft = new FileTransfer();
-  ft.upload(fURI, "http://pond5.dev.eman.cz/form.php", win, fail, options);
+    var ft = new FileTransfer();
+    ft.upload(fURI, "http://pond5.dev.eman.cz/form.php", win, fail, options);
 }
 
 function uploadVideo()
 {
-    document.getElementById('fuptarget').innerHTML = 'Uploading...<br />';
+    document.getElementById('fuptarget').innerHTML = 'UPLOADING...<br />';
 
-    var fileURI = m_file.fullPath;
+    var fileURI = m_filePath;
 
     if (typeof fileURI === 'object')
     {
         for (var nameindex in fileURI) {
-          document.getElementById('fuptarget').innerHTML += 'File: '+fileURI[nameindex]+'<br />';
+            document.getElementById('fuptarget').innerHTML += 'File: '+fileURI[nameindex]+'<br />';
             fileUpload(fileURI[nameindex]);
         }
     }
