@@ -56,6 +56,11 @@ function recVideo(hq, preferVideo)
   );
 }
 
+function takePhoto()
+{
+  navigator.device.capture.captureImage(captureSuccess, captureError);
+}
+
 function getMediaFromGallery(video)
 {
     navigator.camera.getPicture(retrieveSuccess, captureError,
@@ -92,7 +97,7 @@ function captureSuccess(mediaFiles) {
     var mediaFile = mediaFiles[i];
     try
     {
-        m_file = mediaFile;
+        m_filePath = mediaFile.fullPath;
         document.getElementById('fnametarget').innerHTML += 'Got video...<br />';
         mediaFile.getFormatData(getFormatDataSuccess, getFormatDataError);
         document.getElementById('fnametarget').innerHTML += 'Gimme sec...<br />';
@@ -141,11 +146,13 @@ function uploadVideo()
     if (typeof fileURI === 'object')
     {
         for (var nameindex in fileURI) {
+          document.getElementById('fuptarget').innerHTML += 'File: '+fileURI[nameindex]+'<br />';
             fileUpload(fileURI[nameindex]);
         }
     }
     else
     {
+        document.getElementById('fuptarget').innerHTML += 'File: '+fileURI+'<br />';
         fileUpload(fileURI);
     }
 }
