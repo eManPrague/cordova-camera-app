@@ -155,6 +155,13 @@
          <header-file src="src/ios/ELCImagePicker/ELCImagePickerHeader.h" />
          <header-file src="src/ios/ELCImagePicker/ELCOverlayImageView.h" />
          <source-file src="src/ios/ELCImagePicker/ELCOverlayImageView.m" />
+
+         <resource-file src="src/ios/ELCImagePicker/Resources/ELCAlbumPickerController.xib" />
+         <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetPicker.xib" />
+         <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
+         <resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
+         <resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
+
          <framework src="ImageIO.framework" weak="true" />
          <framework src="CoreLocation.framework" />
          <framework src="CoreGraphics.framework" />
